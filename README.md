@@ -15,12 +15,6 @@
 * Синтез речи панели;
 * Поддержка браузеров (Chrome, Firefox, Safari, Internet Explorer(v: 11, 10, 9), Microsoft Edge, Opera и тд.);
 
-<a href="http://bvi.isvek.ru/demo" target="_blank">Демо версия</a>
-
-<h3>Установка</h3>
-
-<a href="http://bvi.isvek.ru/" target="_blank">Инструкция по установке</a>
-
 <h3>Changelog</h3>
 
 <h5>1.0.8</h5>
