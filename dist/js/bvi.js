@@ -4,6 +4,8 @@
 (function($){
     $.bvi = function(options) {
         var default_setting = $.extend({
+        	'bvi_jquery_cookies':  false,
+            'bvi_debug':  false,
             'bvi_target': '.bvi-open',
             'bvi_theme': 'white',
             'bvi_font': 'arial',
@@ -13,12 +15,13 @@
             'bvi_images': true,
             'bvi_reload': false,
             'bvi_fixed': true,
-            'bvi_voice': true,
+            'bvi_use_responsivevoice': false,
+            'bvi_voice': false,
             'bvi_flash_iframe': true,
             'bvi_hide': false
         }, options);
 
-        console.log('Button visually impaired v1.0.8');
+        bvi_debug('Button visually impaired v1.0.8');
 
         var versionIE = detectIE();
         var selector = default_setting.bvi_target;
@@ -54,9 +57,42 @@
 
             return false;
         }
-
+        function bvi_debug(mess) {
+        	if(default_setting.bvi_debug === true) {
+        		console.log(mess);
+        	}
+        }
+    	function bvi_extend () {
+    		var i = 0;
+    		var result = {};
+    		for (; i < arguments.length; i++) {
+    			var attributes = arguments[ i ];
+    			for (var key in attributes) {
+    				result[key] = attributes[key];
+    			}
+    		}
+    		return result;
+    	}
+        function bvi_cookie_set(key, value, attributes) {
+        	if(default_setting.bvi_jquery_cookies === true) {
+        		$.cookie(key, value, attributes);
+        	} else {
+        		Cookies.set(key, value, attributes);
+        	}
+        }
+        function bvi_cookie_get(key, json) {
+        	if(default_setting.bvi_jquery_cookies === true) {
+        		return $.cookie(key);
+        	} else {
+        		if(json) return Cookies.get(key, json);
+        		else return Cookies.get(key);
+        	}
+        }
+        function bvi_cookie_remove(key, attributes) {
+        	bvi_cookie_set(key, '', bvi_extend(attributes, { expires: -1 }));
+        }
         function bvi_voice_check() {
-            if(Cookies.get('bvi-voice') === 'true'){
+            if(bvi_cookie_get('bvi-voice') === 'true'){
                 $('.bvi-link').show();
             } else {
                 $('.bvi-link').hide();
@@ -64,19 +100,19 @@
         }
 
         function bvi_panel_voice(text) {
-            if(Cookies.get('bvi-voice') === 'true'){
-                if(responsiveVoice.voiceSupport()) {
+            if(bvi_cookie_get('bvi-voice') === 'true'){
+                if(default_setting.bvi_use_responsivevoice && responsiveVoice.voiceSupport()) {
                     responsiveVoice.setDefaultVoice("Russian Female");
                     responsiveVoice.cancel();
                     responsiveVoice.speak(text);
                 }
             } else {
-                responsiveVoice.cancel();
+            	if(default_setting.bvi_use_responsivevoice) responsiveVoice.cancel();
             }
         }
 
         function bvi_voice() {
-            if(responsiveVoice.voiceSupport() || versionIE >= 11 || versionIE >= 10 || versionIE >= 9) {
+            if(default_setting.bvi_use_responsivevoice && (responsiveVoice.voiceSupport() || versionIE >= 11 || versionIE >= 10 || versionIE >= 9)) {
                 responsiveVoice.setDefaultVoice("Russian Female");
                 var bvi_voice = $(".bvi-voice");
                 bvi_voice.each(function(index){
@@ -91,7 +127,7 @@
                     var bvi_voice_class = $(this).parent().parent().data('bvi-voice-class');
                     var bvi_voice_text = $(bvi_voice_class).text();
                     if(bvi_voice_class) {
-                        if(Cookies.get('bvi-voice') === 'true'){
+                        if(bvi_cookie_get('bvi-voice') === 'true'){
                             responsiveVoice.speak(bvi_voice_text);
                         }
                     } else {
@@ -106,13 +142,13 @@
             } else {
                 $('.bvi-btn-voice').hide();
                 set('data-bvi-voice', 'bvi-voice', false);
-                console.log('Ваш браузер не поддерживает синтез речи.')
+                bvi_debug('Your browser does not support speech synthesis or it is disabled in the settings.')
             }
         }
 
         function bvi_click() {
             $("#bvi-panel-close, .bvi-panel-close").click(function() {
-                if (Cookies.get("bvi-reload") === 'true') {
+                if (bvi_cookie_get("bvi-reload") === 'true') {
                     document.location.reload(true);
                 }
                 $('.bvi-img-off').remove();
@@ -120,18 +156,19 @@
                     $(this).show();
                     $(this).removeClass('grayscale');
                 });
-                Cookies.remove("bvi-panel-active", {path: "/"});
-                Cookies.remove("bvi-font-size", {path: "/" });
-                Cookies.remove("bvi-theme", {path: "/"});
-                Cookies.remove("bvi-images", {path: "/"});
-                Cookies.remove("bvi-line-height", {path: "/"});
-                Cookies.remove("bvi-letter-spacing", {path: "/"});
-                Cookies.remove("bvi-voice", {path: "/"});
-                Cookies.remove("bvi-font-family", {path: "/"});
-                Cookies.remove("bvi-panel-hide", {path: "/"});
-                Cookies.remove("bvi-flash-iframe", {path: "/"});
-                Cookies.remove("bvi-reload", {path: "/"});
-                if(responsiveVoice.voiceSupport()) {
+                bvi_cookie_remove("bvi-panel-active", {path: "/"});
+                bvi_cookie_remove("bvi-font-size", {path: "/" });
+                bvi_cookie_remove("bvi-theme", {path: "/"});
+                bvi_cookie_remove("bvi-images", {path: "/"});
+                bvi_cookie_remove("bvi-line-height", {path: "/"});
+                bvi_cookie_remove("bvi-letter-spacing", {path: "/"});
+                bvi_cookie_remove("bvi-voice", {path: "/"});
+                bvi_cookie_remove("bvi-font-family", {path: "/"});
+                bvi_cookie_remove("bvi-panel-hide", {path: "/"});
+                bvi_cookie_remove("bvi-flash-iframe", {path: "/"});
+                bvi_cookie_remove("bvi-reload", {path: "/"});
+                bvi_cookie_remove("bvi-fixed", {path: "/"});
+                if(default_setting.bvi_use_responsivevoice && responsiveVoice.voiceSupport()) {
                         responsiveVoice.cancel();
                 }
                 active();
@@ -170,7 +207,7 @@
             });
 
             $('#bvi-font-size-less').click(function () {
-                size = parseFloat(Cookies.get("bvi-font-size")) - 1;
+                size = parseFloat(bvi_cookie_get("bvi-font-size")) - 1;
                 $(this).addClass('active').siblings().removeClass('active');
                 if (size != 0) {
                     set('data-bvi-size', 'bvi-font-size', size);
@@ -180,7 +217,7 @@
             });
 
             $('#bvi-font-size-more').click(function () {
-                size = parseFloat(Cookies.get("bvi-font-size")) + 1;
+                size = parseFloat(bvi_cookie_get("bvi-font-size")) + 1;
                 $(this).addClass('active').siblings().removeClass('active');
                 if (size != 40) {
                     set('data-bvi-size', 'bvi-font-size', size);
@@ -332,13 +369,13 @@
             });
 
             $("#bvi-settings-default").click(function() {
-                $('#bvi-theme-' + Cookies.get("bvi-theme")).removeClass('active');
-                $('#bvi-images-' + Cookies.get("bvi-images")).removeClass('active');
-                $('#bvi-line-height-' + Cookies.get("bvi-line-height")).removeClass('active');
-                $('#bvi-letter-spacing-' + Cookies.get("bvi-letter-spacing")).removeClass('active');
-                $('#bvi-font-family-' + Cookies.get("bvi-font-family")).removeClass('active');
-                $('#bvi-flash-iframe-' + Cookies.get("bvi-flash-iframe")).removeClass('active');
-                $('#bvi-voice-' + Cookies.get("bvi-voice")).removeClass('active');
+                $('#bvi-theme-' + bvi_cookie_get("bvi-theme")).removeClass('active');
+                $('#bvi-images-' + bvi_cookie_get("bvi-images")).removeClass('active');
+                $('#bvi-line-height-' + bvi_cookie_get("bvi-line-height")).removeClass('active');
+                $('#bvi-letter-spacing-' + bvi_cookie_get("bvi-letter-spacing")).removeClass('active');
+                $('#bvi-font-family-' + bvi_cookie_get("bvi-font-family")).removeClass('active');
+                $('#bvi-flash-iframe-' + bvi_cookie_get("bvi-flash-iframe")).removeClass('active');
+                $('#bvi-voice-' + bvi_cookie_get("bvi-voice")).removeClass('active');
 
                 $('#bvi-theme-' + default_setting.bvi_theme).addClass('active');
                 $('#bvi-images-' + default_setting.bvi_images).addClass('active');
@@ -362,63 +399,63 @@
         }
 
         function set(data, set_cookies, set_cookies_data) {
-            Cookies.set(set_cookies, set_cookies_data, {path: "/", expires: 1});
-            $(".bvi-body").attr(data, Cookies.get(set_cookies));
+            bvi_cookie_set(set_cookies, set_cookies_data, {path: "/", expires: 1});
+            $(".bvi-body").attr(data, bvi_cookie_get(set_cookies));
             get_image();
         }
 
         function set_active_link() {
-            $('#bvi-theme-' + Cookies.get("bvi-theme")).addClass('active');
-            $('#bvi-images-' + Cookies.get("bvi-images")).addClass('active');
-            $('#bvi-line-height-' + Cookies.get("bvi-line-height")).addClass('active');
-            $('#bvi-letter-spacing-' + Cookies.get("bvi-letter-spacing")).addClass('active');
-            $('#bvi-font-family-' + Cookies.get("bvi-font-family")).addClass('active');
-            $('#bvi-flash-iframe-' + Cookies.get("bvi-flash-iframe")).addClass('active');
-            $('#bvi-voice-' + Cookies.get("bvi-voice")).addClass('active');
+            $('#bvi-theme-' + bvi_cookie_get("bvi-theme")).addClass('active');
+            $('#bvi-images-' + bvi_cookie_get("bvi-images")).addClass('active');
+            $('#bvi-line-height-' + bvi_cookie_get("bvi-line-height")).addClass('active');
+            $('#bvi-letter-spacing-' + bvi_cookie_get("bvi-letter-spacing")).addClass('active');
+            $('#bvi-font-family-' + bvi_cookie_get("bvi-font-family")).addClass('active');
+            $('#bvi-flash-iframe-' + bvi_cookie_get("bvi-flash-iframe")).addClass('active');
+            $('#bvi-voice-' + bvi_cookie_get("bvi-voice")).addClass('active');
         }
 
         function get() {
-            if (typeof Cookies.get("bvi-font-size") === 'undefined'
-                || typeof Cookies.get("bvi-theme") === 'undefined'
-                || typeof Cookies.get("bvi-images") === 'undefined'
-                || typeof Cookies.get("bvi-line-height") === 'undefined'
-                || typeof Cookies.get("bvi-letter-spacing") === 'undefined'
-                || typeof Cookies.get("bvi-voice") === 'undefined'
-                || typeof Cookies.get("bvi-font-family") === 'undefined'
-                || typeof Cookies.get("bvi-panel-hide") === 'undefined'
-                || typeof Cookies.get("bvi-flash-iframe") === 'undefined'
-                || typeof Cookies.get("bvi-reload") === 'undefined'
-                || typeof Cookies.get("bvi-fixed") === 'undefined'
+            if (typeof bvi_cookie_get("bvi-font-size") === 'undefined'
+                || typeof bvi_cookie_get("bvi-theme") === 'undefined'
+                || typeof bvi_cookie_get("bvi-images") === 'undefined'
+                || typeof bvi_cookie_get("bvi-line-height") === 'undefined'
+                || typeof bvi_cookie_get("bvi-letter-spacing") === 'undefined'
+                || typeof bvi_cookie_get("bvi-voice") === 'undefined'
+                || typeof bvi_cookie_get("bvi-font-family") === 'undefined'
+                || typeof bvi_cookie_get("bvi-panel-hide") === 'undefined'
+                || typeof bvi_cookie_get("bvi-flash-iframe") === 'undefined'
+                || typeof bvi_cookie_get("bvi-reload") === 'undefined'
+                || typeof bvi_cookie_get("bvi-fixed") === 'undefined'
             ){
-                Cookies.set("bvi-font-size", default_setting.bvi_font_size, {path: "/", expires: 1});
-                Cookies.set("bvi-theme", default_setting.bvi_theme, {path: "/", expires: 1});
-                Cookies.set("bvi-images", default_setting.bvi_images, {path: "/", expires: 1});
-                Cookies.set("bvi-line-height", default_setting.bvi_line_height, {path: "/", expires: 1});
-                Cookies.set("bvi-letter-spacing", default_setting.bvi_letter_spacing, {path: "/", expires: 1});
-                Cookies.set("bvi-voice", default_setting.bvi_voice, {path: "/", expires: 1});
-                Cookies.set("bvi-font-family", default_setting.bvi_font, {path: "/", expires: 1});
-                Cookies.set("bvi-panel-hide", default_setting.bvi_hide, {path: "/", expires: 1});
-                Cookies.set("bvi-flash-iframe", default_setting.bvi_flash_iframe, {path: "/", expires: 1});
-                Cookies.set("bvi-reload", default_setting.bvi_reload, {path: "/", expires: 1});
-                Cookies.set("bvi-fixed", default_setting.bvi_fixed, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-font-size", default_setting.bvi_font_size, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-theme", default_setting.bvi_theme, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-images", default_setting.bvi_images, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-line-height", default_setting.bvi_line_height, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-letter-spacing", default_setting.bvi_letter_spacing, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-voice", default_setting.bvi_voice, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-font-family", default_setting.bvi_font, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-panel-hide", default_setting.bvi_hide, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-flash-iframe", default_setting.bvi_flash_iframe, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-reload", default_setting.bvi_reload, {path: "/", expires: 1});
+                bvi_cookie_set("bvi-fixed", default_setting.bvi_fixed, {path: "/", expires: 1});
             }
 
             $('.bvi-body').attr({
-                'data-bvi-panel-hide' : Cookies.get("bvi-panel-hide"),
-                'data-bvi-size' : Cookies.get("bvi-font-size"),
-                'data-bvi-theme' : Cookies.get("bvi-theme"),
-                'data-bvi-images' : Cookies.get("bvi-images"),
-                'data-bvi-line-height' : Cookies.get("bvi-line-height"),
-                'data-bvi-letter-spacing' : Cookies.get("bvi-letter-spacing"),
-                'data-bvi-font-family' : Cookies.get("bvi-font-family"),
-                'data-bvi-flash-iframe' : Cookies.get("bvi-flash-iframe"),
-                'data-bvi-reload' : Cookies.get("bvi-reload"),
-                'data-bvi-voice' : Cookies.get("bvi-voice"),
-                'data-bvi-fixed' : Cookies.get("bvi-fixed")
+                'data-bvi-panel-hide' : bvi_cookie_get("bvi-panel-hide"),
+                'data-bvi-size' : bvi_cookie_get("bvi-font-size"),
+                'data-bvi-theme' : bvi_cookie_get("bvi-theme"),
+                'data-bvi-images' : bvi_cookie_get("bvi-images"),
+                'data-bvi-line-height' : bvi_cookie_get("bvi-line-height"),
+                'data-bvi-letter-spacing' : bvi_cookie_get("bvi-letter-spacing"),
+                'data-bvi-font-family' : bvi_cookie_get("bvi-font-family"),
+                'data-bvi-flash-iframe' : bvi_cookie_get("bvi-flash-iframe"),
+                'data-bvi-reload' : bvi_cookie_get("bvi-reload"),
+                'data-bvi-voice' : bvi_cookie_get("bvi-voice"),
+                'data-bvi-fixed' : bvi_cookie_get("bvi-fixed")
 
             });
 
-            var bvi_panel = Cookies.get("bvi-panel-hide");
+            var bvi_panel = bvi_cookie_get("bvi-panel-hide");
             
             if(bvi_panel === 'false' || typeof bvi_panel === 'undefined') {
                 $('.bvi-panel').show();
@@ -431,7 +468,7 @@
 
         function get_image() {
             var bvi_images;
-            bvi_images = Cookies.get("bvi-images");
+            bvi_images = bvi_cookie_get("bvi-images");
 
             if (bvi_images === 'true') {
                 $("img").each(function() {
@@ -497,9 +534,9 @@
 
         function active() {
             if(versionIE == 8 || versionIE == 7 || versionIE == 6 || versionIE == 5) {
-                console.log('Браузер не поддерживается.');
+                bvi_debug('Браузер не поддерживается.');
             } else {
-                if (Cookies.get('bvi-panel-active') === 'true') {
+                if (bvi_cookie_get('bvi-panel-active') === 'true') {
                     $(selector).hide().after($('<a href="#" class="bvi-panel-close" title="Обычная версия сайта">Обычная версия сайта</a>'));
                     panel();
                     bvi_voice();
@@ -622,7 +659,7 @@
                 '                <div class="bvi-row">\n' +
                 '                    <div class="bvi-col bvi-p-0">\n' +
                 '                        <div class="bvi-text-center bvi-copy bvi-mt-2">\n' +
-                '                            <a href="http://bvi.isvek.ru/" target="_blank" title="bvi.isvek.ru v1.0.7">bvi.isvek.ru</a>\n' +
+                '                            <a href="http://bvi.isvek.ru/" target="_blank" title="">Forked from bvi.isvek.ru version</a>\n' +
                 '                        </div>\n' +
                 '                    </div>\n' +
                 '                </div>\n' +
@@ -637,13 +674,13 @@
             var scroll = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
             if (scroll > 99) {
-                if (Cookies.get("bvi-fixed") == 'true') {
+                if (bvi_cookie_get("bvi-fixed") == 'true') {
                     $(".bvi-panel").addClass("bvi-fixed-top");
                 }
             }
                 $(window).scroll(function () {
                     if ($(this).scrollTop() >= 99) {
-                        if (Cookies.get("bvi-fixed") == 'true') {
+                        if (bvi_cookie_get("bvi-fixed") == 'true') {
                             $(".bvi-panel").addClass('bvi-fixed-top');
                         }
                     } else {
@@ -744,17 +781,21 @@
             check_bvi_hide === true){
             if ($(selector).length) {
                 $(selector).click(function () {
-                    Cookies.set('bvi-panel-active', true, {path: "/", expires: 1});
-                    active();
-                    bvi_panel_voice('Версия сайта для слабовидящих');
-                    return false;
+                    bvi_cookie_set('bvi-panel-active', true, {path: "/", expires: 1});
+                    if (default_setting.bvi_reload === true) {
+                        document.location.reload(true);
+                    } else {
+	                    active();
+	                    bvi_panel_voice('Site version for visually impaired');
+	                    return false;
+                    }
                 });
             } else {
-                console.log('Неправильный параметр: bvi_target');
+                bvi_debug('Wrong parameter: bvi_target');
             }
             active();
         } else {
-            console.log('ERROR BVI v1.0.7 - Неправильный параметр: ' + checkError);
+            bvi_debug('ERROR BVI v1.0.7 - Wrong parameter: ' + checkError);
         }
     };
 })(jQuery);
