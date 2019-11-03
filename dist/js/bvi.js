@@ -1,5 +1,5 @@
 /*!
- * Button visually impaired v1.0.8
+ * Button visually impaired v1.1.9
  */
 (function($){
     $.bvi = function(options) {
@@ -15,13 +15,13 @@
             'bvi_images': true,
             'bvi_reload': false,
             'bvi_fixed': true,
-            'bvi_use_responsivevoice': false,
-            'bvi_voice': false,
+            'bvi_use_responsivevoice': true,
+            'bvi_voice': true,
             'bvi_flash_iframe': true,
             'bvi_hide': false
         }, options);
 
-        bvi_debug('Button visually impaired v1.0.8');
+        bvi_debug('Button visually impaired v1.1.9');
 
         var versionIE = detectIE();
         var selector = default_setting.bvi_target;

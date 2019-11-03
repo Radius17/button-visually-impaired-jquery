@@ -1,7 +1,7 @@
 jQuery(document).ready(function($){
 	$.bvi({
 		'bvi_jquery_cookies':  false,
-		'bvi_debug':  true,
+		'bvi_debug':  false,
 		'bvi_target':'.bvi-open',
 		'bvi_theme':'white',
 		'bvi_font':'arial',
