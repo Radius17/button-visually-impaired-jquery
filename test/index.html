@@ -62,12 +62,37 @@
                 <pre><code class="hljs html m-0 p-0">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"bvi-voice"</span>&gt;Текст который нужно воспроизвести.<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
                 <h5>JS</h5>
                 <p data-tadv-p="keep">Скопируйте и вставте следующие скрипты в конце своих страниц, прямо перед закрывающим <span class="bvi-code text-danger">&lt;/body&gt;</span> тегом, чтобы загрузить наши JS файлы. Поддерживаются следующие версии jQuery: <span class="bvi-code text-danger">1.x, 2.x, 3.x;</span></p>
-                <pre><code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://code.jquery.com/jquery-1.12.4.min.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code><br><code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://domain.name/js/responsivevoice.min.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code><br><code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://domain.name/js/js.cookie.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code><br><code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://domain.name/js/bvi-init.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code><br><code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://domain.name/js/bvi.min.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+                <pre>
+<code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://code.jquery.com/jquery-1.12.4.min.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code>
+<code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://domain.name/js/responsivevoice.min.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code>
+<code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://domain.name/js/js.cookie.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code>
+<code class="hljs html m-0 p-0">ИЛИ (включив bvi_jquery_cookies=true) &lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://domain.name/js/jquery.cookie.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code>
+<code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://domain.name/js/bvi-init.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code>
+<code class="hljs html m-0 p-0">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"http://domain.name/js/bvi.min.js"</span>&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code>
+                </pre>
                 <h5>Инициализация плагина с индивидуальными настройками</h5>
                 <p data-tadv-p="keep">Ссылка инициализации плагина.</p>
                 <pre><code class="hljs html m-0 p-0">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"bvi-open"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"Версия сайта для слабовидящих"</span>&gt;Версия сайта для слабовидящих<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
                 <p data-tadv-p="keep">Откройте файл <span class="bvi-code text-danger">bvi-init.js</span> для редактирования. Ниже приведена таблица опций.</p>
-                <pre><code class="hljs javascript html m-0 p-0">jQuery(<span class="hljs-built_in">document</span>).ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$</span>)</span>{<br />    $.bvi({<br />            <span class="hljs-string">'bvi_target'</span>: <span class="hljs-string">'.bvi-open'</span>,<br />            <span class="hljs-string">"bvi_theme"</span>:<span class="hljs-string">"white"</span>,<br />            <span class="hljs-string">"bvi_font"</span>:<span class="hljs-string">"arial"</span>,<br />            <span class="hljs-string">"bvi_font_size"</span>:<span class="hljs-number">16</span>,<br />            <span class="hljs-string">"bvi_letter_spacing"</span>:<span class="hljs-string">"normal"</span>,<br />            <span class="hljs-string">"bvi_line_height"</span>:<span class="hljs-string">"normal"</span>,<br />            <span class="hljs-string">"bvi_images"</span>:<span class="hljs-literal">true</span>,<br />            <span class="hljs-string">"bvi_reload"</span>:<span class="hljs-literal">false</span>,<br />            <span class="hljs-string">"bvi_fixed"</span>:<span class="hljs-literal">false</span>,<br />            <span class="hljs-string">"bvi_voice"</span>:<span class="hljs-literal">true</span>,<br />            <span class="hljs-string">"bvi_flash_iframe"</span>:<span class="hljs-literal">true</span>,<br />            <span class="hljs-string">"bvi_hide"</span>:<span class="hljs-literal">false</span><br />    });<br />});</code></pre>
+                <pre><code class="hljs javascript html m-0 p-0">
+jQuery(<span class="hljs-built_in">document</span>).ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$</span>)</span>{    $.bvi({            <span class="hljs-string">'bvi_jquery_cookies'</span>: <span class="hljs-string">false</span>,
+            <span class="hljs-string">'bvi_debug'</span>: <span class="hljs-string">false</span>,
+            <span class="hljs-string">'bvi_target'</span>: <span class="hljs-string">'.bvi-open'</span>,
+            <span class="hljs-string">"bvi_theme"</span>:<span class="hljs-string">"white"</span>,
+            <span class="hljs-string">"bvi_font"</span>:<span class="hljs-string">"arial"</span>,
+            <span class="hljs-string">"bvi_font_size"</span>:<span class="hljs-number">16</span>,
+            <span class="hljs-string">"bvi_letter_spacing"</span>:<span class="hljs-string">"normal"</span>,
+            <span class="hljs-string">"bvi_line_height"</span>:<span class="hljs-string">"normal"</span>,
+            <span class="hljs-string">"bvi_images"</span>:<span class="hljs-literal">true</span>,
+            <span class="hljs-string">"bvi_reload"</span>:<span class="hljs-literal">false</span>,
+            <span class="hljs-string">"bvi_fixed"</span>:<span class="hljs-literal">false</span>,
+            <span class="hljs-string">"bvi_use_responsivevoice"</span>:<span class="hljs-literal">true</span>,
+            <span class="hljs-string">"bvi_voice"</span>:<span class="hljs-literal">true</span>,
+            <span class="hljs-string">"bvi_flash_iframe"</span>:<span class="hljs-literal">true</span>,
+            <span class="hljs-string">"bvi_hide"</span>:<span class="hljs-literal">false</span>
+    });
+});
+</code></pre>
                 <h5>Опции</h5>
                 <table class="table table-bordered table-responsive table-striped table-sm">
                     <thead>
@@ -80,6 +105,20 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <tr>
+                        <td class="align-middle">bvi_jquery_cookies</td>
+                        <td class="align-middle">Boolean</td>
+                        <td class="align-middle">false</td>
+                        <td class="align-middle">true, false</td>
+                        <td class="align-middle">Использовать jQuery Cookie Plugin<br />true - Включить <br />false - Выключить</td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle">bvi_debug</td>
+                        <td class="align-middle">Boolean</td>
+                        <td class="align-middle">false</td>
+                        <td class="align-middle">true, false</td>
+                        <td class="align-middle">Выводить сообщения плагина в консоль<br />true - Включить <br />false - Выключить</td>
+                    </tr>
                     <tr>
                         <td class="align-middle">bvi_target</td>
                         <td class="align-middle">String</td>
@@ -134,7 +173,7 @@
                         <td class="align-middle">Boolean</td>
                         <td class="align-middle">true</td>
                         <td class="align-middle">true, false</td>
-                        <td class="align-middle">Перезагрузка страницы при выключении плагина <br />true - Включить <br />false - Выключить</td>
+                        <td class="align-middle">Перезагрузка страницы при включении/выключении плагина <br />true - Включить <br />false - Выключить</td>
                     </tr>
                     <tr>
                         <td class="align-middle">bvi_fixed</td>
@@ -144,11 +183,18 @@
                         <td class="align-middle">Фиксирование панели для слабовидящих вверху страницы <br />true - Включить <br />false - Выключить</td>
                     </tr>
                     <tr>
+                        <td class="align-middle">bvi_use_responsivevoice</td>
+                        <td class="align-middle">Boolean</td>
+                        <td class="align-middle">true</td>
+                        <td class="align-middle">true, false</td>
+                        <td class="align-middle">Использование синтеза речи <br />true - Включить <br />false - Выключить</td>
+                    </tr>
+                    <tr>
                         <td class="align-middle">bvi_voice</td>
                         <td class="align-middle">Boolean</td>
                         <td class="align-middle">true</td>
                         <td class="align-middle">true, false</td>
-                        <td class="align-middle">Синтез речи <br />true - Включить <br />false - Выключить</td>
+                        <td class="align-middle">Синтез речи по умолчанию<br />true - Включить <br />false - Выключить</td>
                     </tr>
                     <tr>
                         <td class="align-middle">bvi_flash_iframe</td>
