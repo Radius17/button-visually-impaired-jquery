@@ -1,5 +1,6 @@
 /*!
  * Button visually impaired v1.1.9
+ * Main styles
  */
 html:not(.bvi-panel) {
 	font-size: 16px !important;
