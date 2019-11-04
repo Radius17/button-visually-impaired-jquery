@@ -402,6 +402,7 @@
             bvi_cookie_set(set_cookies, set_cookies_data, {path: "/", expires: 1});
             $(".bvi-body").attr(data, bvi_cookie_get(set_cookies));
             get_image();
+            $(".bvi-body").trigger("bviClassChange", [$(".bvi-body"), data]);
         }
 
         function set_active_link() {
